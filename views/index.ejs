@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+<main id="main-container">
+  <div id="myDIV" class="header">
+    <h2>My To-Do List</h2>
+    <form action="/submit" method="post">
+      <input type="text" name="newTask" id="myInput" placeholder="Title...">
+      <input type="hidden" name="listType" value="<%= listType %>">
+      <button type="submit" class="addBtn">Add</button>
+    </form>
+  </div>
+
+  <ul id="myUL">
+    <% if (listType === 'home') { %>
+    <% homeTasks.forEach(function(taskItem, index) { %>
+    <li><%= taskItem %></li>
+    <% }) %>
+    <% } else if (listType === 'work') { %>
+    <% workTasks.forEach(function(taskItem, index) { %>
+    <li><%= taskItem %></li>
+    <% }) %>
+    <% } %>
+  </ul>
+</main>
+
+<%- include('partials/footer') %>
