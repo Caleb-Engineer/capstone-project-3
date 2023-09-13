@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"  // <-- Add this line (replace index.js with the entry point of your app if it's different)
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
