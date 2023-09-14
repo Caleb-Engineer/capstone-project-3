@@ -1,7 +1,16 @@
 import express from "express";
+import session from "express-session";
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(
+  session({
+    secret: "someSecretKey",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 let homeTasks = [];
 let workTasks = [];
@@ -12,11 +21,13 @@ app.use(express.static("public"));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.render("index", { homeTasks: homeTasks, listType: "home" });
+  req.session.homeTasks = req.session.homeTasks || [];
+  res.render("index", { homeTasks: req.session.homeTasks, listType: "home" });
 });
 
 app.get("/work", (req, res) => {
-  res.render("index", { workTasks: workTasks, listType: "work" });
+  req.session.workTasks = req.session.workTasks || [];
+  res.render("index", { workTasks: req.session.workTasks, listType: "work" });
 });
 
 app.post("/submit", (req, res) => {
@@ -24,10 +35,10 @@ app.post("/submit", (req, res) => {
   const listType = req.body.listType;
 
   if (newTask && listType === "home") {
-    homeTasks.push(newTask);
+    req.session.homeTasks.push(newTask);
     res.redirect("/");
   } else if (newTask && listType === "work") {
-    workTasks.push(newTask);
+    req.session.workTasks.push(newTask);
     res.redirect("/work");
   } else {
     res.redirect("/");
